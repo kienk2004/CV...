@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Văn Kiện - Hồ sơ học thuật</title>
+    
+    <style>
+        :root {
+            --primary-color: #0f172a; /* Slate 900 đậm chất học thuật */
+            --secondary-color: #1e3a8a; /* Blue 900 */
+            --accent-color: #d97706; /* Amber 600 nổi bật */
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --text-muted: #64748b;
+            --sidebar-width: 300px;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e293b 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2.5rem 1.5rem;
+            z-index: 10;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+
+        .profile-summary {
+            text-align: center;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .profile-avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--secondary-color);
+            margin-bottom: 1.25rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background-color: #fff;
+            transition: transform 0.4s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05) rotate(3deg);
+        }
+
+        .profile-summary h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .profile-summary p {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin: 2rem 0;
+        }
+
+        .nav-links li a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: block;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-links li.active a, .nav-links li a:hover {
+            background-color: rgba(30, 58, 138, 0.4);
+            color: white;
+            font-weight: 600;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 1.5rem;
+        }
+
+        .nav-footer {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-align: center;
+        }
+
+        /* Main Content Container */
+        main {
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            background-color: var(--bg-color);
+        }
+
+        /* Section Layout */
+        section {
+            min-height: 100vh;
+            padding: 5rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid #e2e8f0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        /* Hiệu ứng trượt và mờ tỏ dần cho nội dung */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Academic Styling Components */
+        h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 0.75rem;
+        }
+
+        .info-block {
+            background: var(--card-bg);
+            border-left: 5px solid var(--secondary-color);
+            padding: 2rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        .contact-info {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .contact-info li {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info strong {
+            color: var(--primary-color);
+            display: inline-block;
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .academic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .academic-sub {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            font-style: italic;
+        }
+
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Nút tương tác liên kết bài báo */
+        .academic-link {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            background-color: var(--secondary-color);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-right: 0.75rem;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+        }
+
+        .academic-link:hover {
+            background-color: #1e40af;
+            transform: translateY(-2px);
+        }
+
+        .academic-link svg {
+            margin-right: 0.5rem;
+            fill: currentColor;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+                height: auto;
+            }
+            nav {
+                width: 100%;
+                position: sticky;
+                top: 0;
+                height: auto;
+                padding: 1.5rem;
+            }
+            .profile-summary {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 1.5rem;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+            .profile-avatar {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 0;
+            }
+            .nav-links {
+                display: none;
+            }
+            main {
+                height: auto;
+            }
+            section {
+                padding: 4rem 2rem;
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Sidebar -->
+    <nav>
+        <div class="profile-summary">
+            <img class="profile-avatar" src="z7863195038979_ff44bb51d6ecf901f817e6dc3d40fb49.jpg" alt="Ảnh chân dung Nguyễn Văn Kiện" onerror="this.src='https://placehold.co/150x150/1a365d/ffffff?text=NVK'">
+            <div>
+                <h2>NGUYỄN VĂN KIỆN</h2>
+                <p>Học viên Cao học Toán ứng dụng<br>Đại học Cần Thơ</p>
+            </div>
+        </div>
+        
+        <ul class="nav-links">
+            <li class="active"><a href="#trang1">Thông tin cá nhân</a></li>
+            <li><a href="#trang2">Học vấn & Kỹ năng</a></li>
+            <li><a href="#trang3">Nghiên cứu & Công bố</a></li>
+        </ul>
+
+        <div class="nav-footer">
+            &copy; 2026 Nguyễn Văn Kiện
+        </div>
+    </nav>
+
+    <!-- Main Content Area with Smooth Scrolling -->
+    <main id="main-content">
+        
+        <!-- Page 1: Thông tin cá nhân -->
+        <section id="trang1" class="reveal">
+            <h1>Thông tin cá nhân</h1>
+            
+            <div style="max-width: 900px;">
+                <div class="info-block">
+                    <h3>Thông tin liên hệ</h3>
+                    <ul class="contact-info">
+                        <li><strong>Họ và tên:</strong> NGUYỄN VĂN KIỆN</li>
+                        <li><strong>Trạng thái:</strong> Cao học Toán ứng dụng (Khóa K33) - Đại học Cần Thơ</li>
+                        <li><strong>Sđt:</strong> 0822857243</li>
+                        <li><strong>Gmail:</strong> kvan78025@gmail.com</li>
+                        <li><strong>Địa chỉ:</strong> Cần Thơ, Việt Nam</li>
+                    </ul>
+                </div>
+
+                <div class="info-block">
+                    <h3>Mục tiêu nghề nghiệp & Nghiên cứu</h3>
+                    <ul>
+                         <li>Sử dụng các kiến thức cơ bản của toán học trong giảng dạy. </li>
+                        <li>Ứng dụng kiến thức Toán tối ưu, Mô phỏng số và Xác suất thống kê vào phân tích số liệu thực tiễn.</li>
+                       
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 2: Thông tin về học vấn -->
+        <section id="trang2" class="reveal">
+            <h1>Thông tin học vấn & Kỹ năng</h1>
+            
+            <div class="info-block" style="max-width: 900px;">
+                <div class="academic-header">
+                    <span>Trường Khoa học Tự nhiên - Đại học Cần Thơ</span>
+                </div>
+                <div class="academic-sub">Hệ Cao học và Đại học ngành Toán ứng dụng</div>
+                
+                <p style="margin-bottom: 0.8rem;"><strong>Bậc đào tạo hiện tại:</strong> Cao học Toán ứng dụng (Định hướng nghiên cứu)</p>
+                <p style="margin-bottom: 0.8rem;"><strong>Cử nhân:</strong> Toán ứng dụng (Khóa 48)</p>
+                
+                <!-- Điểm GPA và Điểm rèn luyện đã được đưa về định dạng văn bản thường -->
+                <p style="margin-bottom: 0.8rem;"><strong>Điểm trung bình tích lũy (GPA):</strong> 3.66 / 4.00 (Xếp loại Xuất sắc)</p>
+                <p style="margin-bottom: 0.8rem;"><strong>Điểm rèn luyện toàn khóa:</strong> 96 / 100 (Xếp loại Xuất sắc)</p>
+
+                <p style="margin-top: 1rem;"><strong>Đề tài luận văn tốt nghiệp Đại học:</strong> Bài toán Fermat - Torricelli trong tối ưu</p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.25rem;">Người hướng dẫn khoa học: TS. Đinh Ngọc Quý (Khoa Toán học)</p>
+            </div>
+
+            <div style="max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+                <div>
+                    <h3>Kỹ năng chuyên môn</h3>
+                    <ul>
+                        <li>Mô phỏng ngẫu nhiên & Bước đi ngẫu nhiên.</li>
+                        <li>Mô hình hóa toán học hệ vật lý.</li>
+                        <li>Tối ưu hóa không trơn & Phân tích số.</li>
+                        <li>Xử lý và phân tích dữ liệu thống kê.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Tin học học thuật</h3>
+                    <p style="margin-bottom: 0.8rem;">Sử dụng cơ bản các phần mềm khoa học, xử lý số liệu & ngôn ngữ lập trình:</p>
+                    <div class="badge-container">
+                        <span class="badge">Python</span>
+                        <span class="badge">R</span>
+                        <span class="badge">Matlab</span>
+                        <span class="badge">SPSS</span>
+                        <span class="badge">C</span>
+                        <span class="badge">LaTeX</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Thông tin về công trình nghiên cứu -->
+        <section id="trang3" class="reveal">
+            <h1>Thông tin nghiên cứu & Công bố</h1>
+            
+            <!-- Đề tài luận văn Đại học (Đã xóa nút liên kết thư viện CTU) -->
+            <div class="info-block" style="max-width: 900px;">
+                <div class="academic-header">
+                    <span>Luận văn Tốt nghiệp Cử nhân (12/2025)</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-weight: 700; color: var(--secondary-color); font-size: 1.1rem;">
+                    BÀI TOÁN FERMAT - TORRICELLI TRONG TỐI ƯU
+                </p>
+                <p style="font-style: italic; font-size: 0.9rem; margin-bottom: 0.5rem;">Người hướng dẫn: TS. Đinh Ngọc Quý (Đại học Cần Thơ)</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Khảo sát lý thuyết tối ưu hóa không trơn liên quan đến bài toán Fermat - Torricelli cổ điển và mở rộng trên không gian hữu hạn chiều.</li>
+                    <li>Nghiên cứu ứng dụng thực nghiệm: Xây dựng thuật toán Weiszfeld và thuật toán dưới vi phân để tối ưu hóa vị trí định vị UAV (Thiết bị bay không người lái) cứu nạn cứu hộ thực tế.</li>
+                </ul>
+            </div>
+
+            <!-- Bài báo khoa học đã công bố (Đã chuyển đổi toàn bộ công thức toán học sang chữ thường dễ nhìn) -->
+            <div class="info-block" style="max-width: 900px;">
+                <div class="academic-header">
+                    <span>Bài báo Khoa học công bố (Tạp chí Khoa học ĐH Cần Thơ - 2026)</span>
+                </div>
+                <p style="margin-top: 0.5rem; font-weight: 700; color: var(--secondary-color); font-size: 1.1rem;">
+                    LUẬT SỐ LỚN CHO BƯỚC ĐI NGẪU NHIÊN VỚI LỰC NGOÀI TÁC ĐỘNG
+                </p>
+                <p style="font-style: italic; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                    Tác giả: Lâm Hoàng Chương, Huỳnh Minh Đăng, Lê Trường Phát, <strong>Nguyễn Văn Kiện</strong>, Trang Thị Hiền, Lê Hoài Nhân
+                </p>
+                <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                    <em>Tạp chí Khoa học Đại học Cần Thơ, Tập 62, Số 3A (2026): 89-96</em>
+                </p>
+                
+                <p><strong>Nội dung học thuật nổi bật:</strong></p>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Khảo sát bước đi ngẫu nhiên X_n (với n >= 0) chịu tác động của ngoại lực biến đổi lambda, định lượng qua xác suất chuyển trạng thái trong không gian một chiều tập số nguyên Z:
+                        <br>&bull; Xác suất tiến: P(X_n+1 = k+1 | X_n = k) = lambda * alpha_k
+                        <br>&bull; Xác suất lùi: P(X_n+1 = k-1 | X_n = k) = alpha_k-1
+                    </li>
+                    <li>Chứng minh sự tồn tại của Luật số lớn khi dãy xác suất chuyển alpha_k (với k thuộc Z) không hội tụ:
+                        <br>&bull; Tỷ số X_n / n sẽ hội tụ theo xác suất về giá trị: [2 * (lambda - 1) * alpha] / 3 khi n tiến dần ra vô cùng.
+                    </li>
+                    <li>Sử dụng Python mô phỏng chính xác đường đi và minh chứng độ tiệm cận thực tế hoàn toàn trùng khớp với chứng minh lý thuyết.</li>
+                </ul>
+
+                <!-- Đường link chính xác của bài báo trên hệ thống Tạp chí Khoa học Đại học Cần Thơ -->
+                <a class="academic-link" href="https://ctujsvn.ctu.edu.vn/index.php/ctujsvn/article/view/8172" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+                    Xem bài viết (DOI: 10.22144/ctujos.2026.115)
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- Theo dõi trạng thái cuộn để bắt sáng thanh menu ---
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.nav-links li');
+        const mainContent = document.getElementById('main-content');
+
+        const observerOptions = {
+            root: mainContent,
+            rootMargin: '0px',
+            threshold: 0.4 
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        const link = item.querySelector('a').getAttribute('href').substring(1);
+                        if (link === id) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- Xử lý hoạt ảnh hiển thị dần khi cuộn trang (Scroll Reveal) ---
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            const triggerBottom = window.innerHeight * 0.85;
+            
+            revealElements.forEach(el => {
+                const elTop = el.getBoundingClientRect().top;
+                if (elTop < triggerBottom) {
+                    el.classList.add('visible');
+                } else {
+                    el.classList.remove('visible'); 
+                }
+            });
+        };
+
+        mainContent.addEventListener('scroll', revealOnScroll);
+        document.addEventListener('DOMContentLoaded', () => {
+            revealOnScroll();
+        });
+    </script>
+</body>
+</html>
